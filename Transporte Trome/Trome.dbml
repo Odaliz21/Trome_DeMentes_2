@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="BDTrome" Class="TromeDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=localhost;Initial Catalog=BDTrome;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="BDTromeConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.CarritoCompras" Member="CarritoCompras">
+    <Type Name="CarritoCompras">
+      <Column Name="IdCarrito" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdCliente" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdServicio" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Cantidad" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Subtotal" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="IGV" Type="System.Decimal" DbType="Decimal(13,4)" IsDbGenerated="true" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Total" Type="System.Decimal" DbType="Decimal(14,4)" IsDbGenerated="true" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="TCliente_CarritoCompras" Member="Cliente" ThisKey="IdCliente" OtherKey="IdCliente" Type="Cliente" IsForeignKey="true" />
+      <Association Name="TServicio_CarritoCompras" Member="Servicio" ThisKey="IdServicio" OtherKey="IdServicio" Type="Servicio" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ColaboradorEnvio" Member="ColaboradorEnvio">
+    <Type Name="ColaboradorEnvio">
+      <Column Name="IdColaborador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IdEnvio" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="TColaborador_ColaboradorEnvio" Member="Colaborador" ThisKey="IdColaborador" OtherKey="IdColaborador" Type="Colaborador" IsForeignKey="true" />
+      <Association Name="TEnvio_ColaboradorEnvio" Member="Envio" ThisKey="IdEnvio" OtherKey="IdEnvio" Type="Envio" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TCliente" Member="Cliente">
+    <Type Name="Cliente">
+      <Column Name="IdCliente" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Direccion" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Telefono" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="CodUsuario" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Contrasena" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="TCliente_CarritoCompras" Member="CarritoCompras" ThisKey="IdCliente" OtherKey="IdCliente" Type="CarritoCompras" />
+      <Association Name="TCliente_TEnvio" Member="Envio" ThisKey="IdCliente" OtherKey="IdCliente" Type="Envio" />
+      <Association Name="TUsuario_TCliente" Member="Usuario" ThisKey="CodUsuario" OtherKey="CodUsuario" Type="Usuario" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TColaborador" Member="Colaborador">
+    <Type Name="Colaborador">
+      <Column Name="IdColaborador" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Cargo" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Telefono" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="CodUsuario" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Contrasena" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IdVehiculo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="TColaborador_ColaboradorEnvio" Member="ColaboradorEnvio" ThisKey="IdColaborador" OtherKey="IdColaborador" Type="ColaboradorEnvio" />
+      <Association Name="TUsuario_TColaborador" Member="Usuario" ThisKey="CodUsuario" OtherKey="CodUsuario" Type="Usuario" IsForeignKey="true" />
+      <Association Name="TVehiculo_TColaborador" Member="Vehiculo" ThisKey="IdVehiculo" OtherKey="IdVehiculo" Type="Vehiculo" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TEnvio" Member="Envio">
+    <Type Name="Envio">
+      <Column Name="IdEnvio" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdCliente" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdServicio" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FechaEnvio" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="FechaRecojo" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Peso" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Volumen" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="TipoDocumento" Type="System.Char" DbType="Char(1) NOT NULL" CanBeNull="false" />
+      <Column Name="TarifaBase" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="MontoPago" Type="System.Decimal" DbType="Decimal(14,3)" IsDbGenerated="true" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="EstadoEnvio" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="TEnvio_ColaboradorEnvio" Member="ColaboradorEnvio" ThisKey="IdEnvio" OtherKey="IdEnvio" Type="ColaboradorEnvio" />
+      <Association Name="TCliente_TEnvio" Member="Cliente" ThisKey="IdCliente" OtherKey="IdCliente" Type="Cliente" IsForeignKey="true" />
+      <Association Name="TServicio_TEnvio" Member="Servicio" ThisKey="IdServicio" OtherKey="IdServicio" Type="Servicio" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TServicio" Member="Servicio">
+    <Type Name="Servicio">
+      <Column Name="IdServicio" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Descripcion" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="TarifaBase" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Association Name="TServicio_CarritoCompras" Member="CarritoCompras" ThisKey="IdServicio" OtherKey="IdServicio" Type="CarritoCompras" />
+      <Association Name="TServicio_TEnvio" Member="Envio" ThisKey="IdServicio" OtherKey="IdServicio" Type="Envio" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TUsuario" Member="Usuario">
+    <Type Name="Usuario">
+      <Column Name="CodUsuario" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Contrasena" Type="System.Data.Linq.Binary" DbType="VarBinary(8000) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="TUsuario_TCliente" Member="Cliente" ThisKey="CodUsuario" OtherKey="CodUsuario" Type="Cliente" />
+      <Association Name="TUsuario_TColaborador" Member="Colaborador" ThisKey="CodUsuario" OtherKey="CodUsuario" Type="Colaborador" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TVehiculo" Member="Vehiculo">
+    <Type Name="Vehiculo">
+      <Column Name="IdVehiculo" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Marca" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Modelo" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Placa" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="CapacidadCarga" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Association Name="TVehiculo_TColaborador" Member="Colaborador" ThisKey="IdVehiculo" OtherKey="IdVehiculo" Type="Colaborador" />
+    </Type>
+  </Table>
+</Database>
